@@ -100,7 +100,7 @@ FILE * openFileWrite(char filename[])
 {
         FILE *writeFile = fopen(filename, "a");
         if (writeFile == NULL){
-                perror("Open File");
+                perror("Write File");
                 exit(1);
         }
         else 

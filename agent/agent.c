@@ -40,6 +40,11 @@ int main()
                                 send(agentSocketfd, agentInfo, sizeof(agentInfo), 0);
                                 memset(agentInfo, 0, sizeof(agentInfo));
                                 
+                        }else {
+
+                                perror("Connection error");
+                                exit(1);
+
                         }
 
                         close(agentSocketfd);
