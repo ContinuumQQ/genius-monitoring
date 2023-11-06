@@ -26,7 +26,7 @@ int main()
                 
                 while (1)
                 {
-2                       serverAcceptfd = accept(serverSocketfd, NULL, NULL);
+                        serverAcceptfd = accept(serverSocketfd, NULL, NULL);
 
                         if(serverAcceptfd > 0){
                                 recv(serverAcceptfd, getAgentInformation, sizeof(getAgentInformation), 0);
