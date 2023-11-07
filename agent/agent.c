@@ -183,7 +183,7 @@ void getInfo(char *info, struct tm *sysTime, time_t sTime)
 void readConfig(struct serverInfo *info, char fileName[])
 {
         FILE *configFile = openFile(fileName);
-        char buffer[64];
+        char buffer[64] = "";
         char strKey[32] = "";
         char *pstrKey = strKey;
        /*char *strKey = (char *) malloc(32 * sizeof(char));
@@ -197,15 +197,17 @@ void readConfig(struct serverInfo *info, char fileName[])
                         __strtok_r(buffer, "=", &pstrKey);
 
                         removeSymbol(pstrKey, ' ');
-                                
-                        strcpy(info -> ip, strKey);
+                        removeSymbol(pstrKey, '\n');
+
+                        strcpy(info -> ip, pstrKey);
+
                         memset(buffer, 0, sizeof(buffer));
                 }
 
                 if (counter == 1)
                 {
                         __strtok_r(buffer, "=", &pstrKey);
-                        info -> port = atoi(strKey);
+                        info -> port = atoi(pstrKey);
                 }
 
                 counter++;

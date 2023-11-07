@@ -108,40 +108,51 @@ FILE * openFileWrite(char filename[])
 
 }
 
+void removeSymbol(char str[], char symbol)
+{
+        size_t i = 0;
+
+        for (i = 0; i < strlen(str); i++){
+                if (str[i] == symbol){
+                        memmove(&str[i], &str[i + 1], strlen(str) - i);
+                        i--;
+                }
+        }
+}
+
 void readConfig(struct serverInfo *info, char fileName[])
 {
         FILE *configFile = openFile(fileName);
         char buffer[64];
-        char *strKey =(char *) malloc(32 * sizeof(char));
+        char strKey[32] = "";
+        char *pstrKey = strKey;
+       /*char *strKey = (char *) malloc(32 * sizeof(char));
+        */
         int counter = 0;
 
         while(fgets(buffer, sizeof(buffer), configFile) != NULL){
 
                 if (counter == 0)
                 {
-                        __strtok_r(buffer, "=", &strKey);
+                        __strtok_r(buffer, "=", &pstrKey);
 
-                        while (*strKey == ' ')
-                                strKey++;
-                                
-                        strcpy(info -> ip, strKey);
+                        removeSymbol(pstrKey, ' ');
+                        removeSymbol(pstrKey, '\n');
+
+                        strcpy(info -> ip, pstrKey);
+                        
                         memset(buffer, 0, sizeof(buffer));
                 }
 
                 if (counter == 1)
                 {
-                        __strtok_r(buffer, "=", &strKey);
-                        info -> port = atoi(strKey);
-                        /*sscanf(strKey, "%d", &info -> port);*/
-
+                        __strtok_r(buffer, "=", &pstrKey);
+                        info -> port = atoi(pstrKey);
                 }
 
                 counter++;
         }
 
-        strKey = NULL;
-        free(strKey);
-        
         fclose(configFile);
 }
 
