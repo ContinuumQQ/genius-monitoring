@@ -83,37 +83,6 @@ int createServerSocket(int domain, int type, int protocol)
                 }
 }
 
-FILE * openFile(char filename[])
-{
-        FILE *configFile = fopen(filename, "r");
-        if (configFile == NULL){
-                perror("Open File");
-                exit(1);
-        }
-        else 
-                return configFile;
-
-}
-
-void removeSymbol(char str[], char symbol)
-{
-        size_t i = 0;
-
-        for (i = 0; i < strlen(str); i++){
-                if (str[i] == symbol){
-                        memmove(&str[i], &str[i + 1], strlen(str) - i);
-                        i--;
-                }
-        }
-}
-
-void infoCat(char *dst, char *src)
-{
-        strcat(src, ".");
-
-        strcat(dst, src);
-}
-
 void getCpuInfo(char *info)
 {
         FILE *cpuInfo = openFile("/proc/cpuinfo");
@@ -180,41 +149,7 @@ void getInfo(char *info, struct tm *sysTime, time_t sTime)
         getMemInfo(info);
 }
 
-void readConfig(struct serverInfo *info, char fileName[])
-{
-        FILE *configFile = openFile(fileName);
-        char buffer[64] = "";
-        char strKey[32] = "";
-        char *pstrKey = strKey;
-       /*char *strKey = (char *) malloc(32 * sizeof(char));
-        */
-        int counter = 0;
 
-        while(fgets(buffer, sizeof(buffer), configFile) != NULL){
-
-                if (counter == 0)
-                {
-                        __strtok_r(buffer, "=", &pstrKey);
-
-                        removeSymbol(pstrKey, ' ');
-                        removeSymbol(pstrKey, '\n');
-                        
-                        strcpy(info -> ip, pstrKey);
-
-                        memset(buffer, 0, sizeof(buffer));
-                }
-
-                if (counter == 1)
-                {
-                        __strtok_r(buffer, "=", &pstrKey);
-                        info -> port = atoi(pstrKey);
-                }
-
-                counter++;
-        }
-
-        fclose(configFile);
-}
 
 
 void getSystemTime (char *info, struct tm *sysTime, time_t sTime)
