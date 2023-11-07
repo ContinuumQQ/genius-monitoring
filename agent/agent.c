@@ -184,17 +184,19 @@ void readConfig(struct serverInfo *info, char fileName[])
 {
         FILE *configFile = openFile(fileName);
         char buffer[64];
-        char *strKey =(char *) malloc(32 * sizeof(char));
+        char strKey[32] = "";
+        char *pstrKey = strKey;
+       /*char *strKey = (char *) malloc(32 * sizeof(char));
+        */
         int counter = 0;
 
         while(fgets(buffer, sizeof(buffer), configFile) != NULL){
 
                 if (counter == 0)
                 {
-                        __strtok_r(buffer, "=", &strKey);
+                        __strtok_r(buffer, "=", &pstrKey);
 
-                        while (*strKey == ' ')
-                                strKey++;
+                        removeSymbol(pstrKey, ' ');
                                 
                         strcpy(info -> ip, strKey);
                         memset(buffer, 0, sizeof(buffer));
@@ -202,18 +204,13 @@ void readConfig(struct serverInfo *info, char fileName[])
 
                 if (counter == 1)
                 {
-                        __strtok_r(buffer, "=", &strKey);
+                        __strtok_r(buffer, "=", &pstrKey);
                         info -> port = atoi(strKey);
-                        /*sscanf(strKey, "%d", &info -> port);*/
-
                 }
 
                 counter++;
         }
 
-        strKey = NULL;
-        free(strKey);
-        
         fclose(configFile);
 }
 
