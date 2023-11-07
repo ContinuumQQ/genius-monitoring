@@ -198,7 +198,7 @@ void readConfig(struct serverInfo *info, char fileName[])
 
                         removeSymbol(pstrKey, ' ');
                         removeSymbol(pstrKey, '\n');
-
+                        
                         strcpy(info -> ip, pstrKey);
 
                         memset(buffer, 0, sizeof(buffer));
